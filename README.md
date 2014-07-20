@@ -1,6 +1,6 @@
 # Projector
 
-TODO: Write a gem description
+Command-line interface to the (.projections.json)[https://github.com/tpope/vim-projectionist] format
 
 ## Installation
 
