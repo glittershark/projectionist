@@ -1,5 +1,5 @@
-require "projector/version"
+require 'projector/version'
+require 'projector/projections'
 
 module Projector
-  # Your code goes here...
 end
