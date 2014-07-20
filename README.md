@@ -1,6 +1,6 @@
 # Projector
 
-Command-line interface to the (.projections.json)[https://github.com/tpope/vim-projectionist] format
+Command-line interface to the [.projections.json](https://github.com/tpope/vim-projectionist) format
 
 ## Installation
 
