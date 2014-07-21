@@ -1,4 +1,4 @@
-# Projector
+# Projector 
 
 Command-line interface to the [.projections.json](https://github.com/tpope/vim-projectionist) format
 
@@ -27,3 +27,4 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
