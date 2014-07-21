@@ -39,7 +39,7 @@ describe Projector do
       end
     end
 
-    describe 'in a child directory' do
+    context 'when in a child directory' do
       before do
         write_fixtures({
           "*/*" => {
@@ -63,7 +63,7 @@ describe Projector do
       end
     end
 
-    describe 'without a config file' do
+    context 'without a config file' do
       before do
         delete_fixtures
         Dir.chdir fixture_folder
