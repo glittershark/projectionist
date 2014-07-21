@@ -3,6 +3,7 @@ require 'json'
 module Projector
   class Projections
     attr_reader :commands
+    attr_reader :json_file_existed
 
     def initialize
       @commands = []
@@ -11,7 +12,10 @@ module Projector
     def load_file(path = nil)
       if path == nil then
         path = get_path
-        if path == nil then return end
+        if path == nil then
+          @json_file_existed = false
+          return
+        end
       end
       @json = get_json path
 
@@ -20,6 +24,7 @@ module Projector
           @commands.push options['type']
         end
       end
+      @json_file_existed = true
     end
 
     def has_command?(command)

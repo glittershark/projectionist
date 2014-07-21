@@ -19,4 +19,8 @@ def write_fixtures(hash)
   File.open(fixture_path, 'w') { |f| f.write(hash.to_json) }
 end
 
+def delete_fixtures
+  if File.exists? fixture_path then File.delete fixture_path end
+end
+
 

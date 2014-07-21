@@ -33,6 +33,10 @@ describe Projector do
         expect(@projections.has_command? 'test').to be true
         expect(@projections.has_command? 'toast').to be false
       end
+
+      it 'sets a flag that the file existed' do
+        expect(@projections.json_file_existed).to be true
+      end
     end
 
     describe 'in a child directory' do
@@ -52,6 +56,23 @@ describe Projector do
 
       it 'still loads the file' do
         expect(@projections.commands).to eq ['test']
+      end
+
+      it 'still sets a flag that the file existed' do
+        expect(@projections.json_file_existed).to be true
+      end
+    end
+
+    describe 'without a config file' do
+      before do
+        delete_fixtures
+        Dir.chdir fixture_folder
+        @projections = Projector::Projections.new
+        @projections.load_file
+      end
+
+      it "sets a flag that the file didn't exist" do
+        expect(@projections.json_file_existed).to be false
       end
     end
   end
