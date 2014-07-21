@@ -1,4 +1,4 @@
-# Projector 
+# Projector [![Build Status](https://travis-ci.org/glittershark/projector.svg?branch=master)](https://travis-ci.org/glittershark/projector)
 
 Command-line interface to the [.projections.json](https://github.com/tpope/vim-projectionist) format
 
