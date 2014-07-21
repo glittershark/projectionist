@@ -8,7 +8,11 @@ module Projector
       @commands = []
     end
 
-    def load_file(path)
+    def load_file(path = nil)
+      if path == nil then
+        path = get_path
+        if path == nil then return end
+      end
       @json = get_json path
 
       @json.each do |regex, options|
@@ -25,6 +29,16 @@ module Projector
     private
     def get_json(path)
       File.open(path, 'r') { |f| JSON.parse(f.read) }
+    end
+
+    def get_path
+      path = File.expand_path './.projections.json'
+      while !File.exists? path
+        if [false, '/'].include? File.dirname path then return nil end
+        path = File.expand_path '../../.projections.json', path
+      end
+
+      path
     end
   end
 end

@@ -7,6 +7,12 @@ describe Projector do
 
   describe 'Projections' do
     before do
+      write_fixtures({
+        "*/*" => {
+          "type" => "test"
+        }
+      })
+      Dir.chdir fixture_folder
       @projections = Projector::Projections.new
     end
 
@@ -16,11 +22,6 @@ describe Projector do
 
     describe 'Command handling' do
       before do
-        write_fixtures({
-          "*/*" => {
-            "type" => "test"
-          }
-        })
         @projections.load_file fixture_path
       end
 
@@ -33,5 +34,26 @@ describe Projector do
         expect(@projections.has_command? 'toast').to be false
       end
     end
+
+    describe 'in a child directory' do
+      before do
+        write_fixtures({
+          "*/*" => {
+            "type" => "test"
+          }
+        })
+
+        dir = File.join(fixture_folder, 'otherdir')
+        if !Dir.exists? dir then Dir.mkdir dir end
+        Dir.chdir dir
+        @projections = Projector::Projections.new
+        @projections.load_file
+      end
+
+      it 'still loads the file' do
+        expect(@projections.commands).to eq ['test']
+      end
+    end
   end
 end
+
