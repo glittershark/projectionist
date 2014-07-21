@@ -1,6 +1,6 @@
 # Projector [![Build Status](https://travis-ci.org/glittershark/projector.svg?branch=master)](https://travis-ci.org/glittershark/projector)
 
-Command-line interface to the [.projections.json](https://github.com/tpope/vim-projectionist) format
+Command-line interface to the [.projections.json](https://github.com/tpope/vim-projectionist) format - WIP
 
 ## Installation
 
@@ -22,7 +22,7 @@ TODO: Write usage instructions here
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/projector/fork )
+1. [Fork it](https://github.com/glittershark/projector/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
