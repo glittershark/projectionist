@@ -30,6 +30,11 @@ module Projector
       File.expand_path(file.nil? ? specific_glob : file)
     end
 
+    def files_for(type)
+      return [] unless type? type
+      Dir.glob(@types[type]['glob']).map { |p| File.expand_path p }
+    end
+
     private
 
     def get_json(path)

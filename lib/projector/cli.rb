@@ -18,5 +18,10 @@ module Projector
       file = @projections.file_for type, file
       Kernel.exec(editor, file)
     end
+
+    desc 'list <type>', 'List all files for <type>'
+    def list(type)
+      puts @projections.files_for(type).join("\n")
+    end
   end
 end

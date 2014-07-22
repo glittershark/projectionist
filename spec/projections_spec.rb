@@ -65,6 +65,39 @@ describe Projector::Projections do
     end
   end
 
+  describe '#files_for' do
+    before do
+      write_fixtures('test/test_*.rb' => { 'type' => 'test' })
+      @test_dir = File.join(fixture_folder, 'test')
+      Dir.mkdir(@test_dir) unless Dir.exist? @test_dir
+      @test_files = (1..10).map do |n|
+        file = File.join(@test_dir, "test_#{n}.rb")
+        File.open(file, 'w')
+        file
+      end
+
+      # make bad test files as well
+      5.times do |n|
+        file = File.join(@test_dir, "bad_#{n}.rb")
+        File.open(file, 'w')
+      end
+
+      @projections.load_file
+    end
+
+    context 'with a valid type' do
+      it 'matches the correct files' do
+        expect(@projections.files_for 'test').to match_array(@test_files)
+      end
+    end
+
+    context 'without a valid type' do
+      it 'returns an empty array' do
+        expect(@projections.files_for 'toast').to eq []
+      end
+    end
+  end
+
   describe '#file_for' do
     before do
       write_fixtures('test/*.rb' => { 'type' => 'test' })
