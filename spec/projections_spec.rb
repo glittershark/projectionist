@@ -3,11 +3,10 @@ require 'helper'
 describe Projector::Projections do
   before do
     write_fixtures('*/*' => { 'type' => 'test' })
+    Dir.mkdir fixture_folder unless Dir.exist? fixture_folder
     Dir.chdir fixture_folder
     @projections = Projector::Projections.new
   end
-
-  after { empty_fixtures }
 
   it 'exists' do
     expect(@projections).not_to be nil
@@ -36,7 +35,6 @@ describe Projector::Projections do
     context 'when in a child directory' do
       before do
         write_fixtures('*/*' => { 'type' => 'test' })
-
         dir = File.join(fixture_folder, 'otherdir')
         Dir.mkdir dir unless Dir.exist? dir
         Dir.chdir dir
@@ -55,8 +53,8 @@ describe Projector::Projections do
 
     context 'without a config file' do
       before do
-        delete_fixtures
         Dir.chdir fixture_folder
+        delete_fixtures
         @projections = Projector::Projections.new
         @projections.load_file
       end

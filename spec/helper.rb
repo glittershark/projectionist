@@ -3,13 +3,19 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'projector'
 require 'json'
 require 'fileutils'
+require 'tmpdir'
+
+RSpec.configure do |config|
+  config.before(:suite) { $tmpdir = Dir.mktmpdir }
+  config.after(:suite)  { FileUtils.remove_entry_secure $tmpdir }
+end
 
 def fixture_folder
-  File.expand_path('../fixtures', __FILE__)
+  $tmpdir
 end
 
 def fixture_file
-  File.expand_path(File.join(fixture_folder, '.projections.json'), __FILE__)
+  File.join(fixture_folder, '.projections.json')
 end
 
 def read_fixtures
@@ -25,5 +31,5 @@ def delete_fixtures
 end
 
 def empty_fixtures
-  FileUtils.rm_rf Dir.glob("#{fixture_folder}/*")
+  FileUtils.rm_rf Dir.glob("#{fixture_folder}/*", File::FNM_DOTMATCH)
 end
