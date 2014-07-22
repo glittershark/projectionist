@@ -1,3 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'projector'
+require 'projector/cli'
+
+Projector::CLI.start(ARGV)
+

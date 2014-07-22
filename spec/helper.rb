@@ -20,7 +20,5 @@ def write_fixtures(hash)
 end
 
 def delete_fixtures
-  if File.exists? fixture_path then File.delete fixture_path end
+  File.delete fixture_path if File.exist? fixture_path
 end
-
-

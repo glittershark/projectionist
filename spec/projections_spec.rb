@@ -7,11 +7,7 @@ describe Projector do
 
   describe 'Projections' do
     before do
-      write_fixtures({
-        "*/*" => {
-          "type" => "test"
-        }
-      })
+      write_fixtures('*/*' => { 'type' => 'test' })
       Dir.chdir fixture_folder
       @projections = Projector::Projections.new
     end
@@ -30,8 +26,8 @@ describe Projector do
       end
 
       it 'has a method to check if a given command exists' do
-        expect(@projections.has_command? 'test').to be true
-        expect(@projections.has_command? 'toast').to be false
+        expect(@projections.command? 'test').to be true
+        expect(@projections.command? 'toast').to be false
       end
 
       it 'sets a flag that the file existed' do
@@ -41,14 +37,10 @@ describe Projector do
 
     context 'when in a child directory' do
       before do
-        write_fixtures({
-          "*/*" => {
-            "type" => "test"
-          }
-        })
+        write_fixtures('*/*' => { 'type' => 'test' })
 
         dir = File.join(fixture_folder, 'otherdir')
-        if !Dir.exists? dir then Dir.mkdir dir end
+        Dir.mkdir dir unless Dir.exist? dir
         Dir.chdir dir
         @projections = Projector::Projections.new
         @projections.load_file
@@ -77,4 +69,3 @@ describe Projector do
     end
   end
 end
-
