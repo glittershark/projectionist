@@ -13,12 +13,12 @@ module Projector
       @json = get_json path
 
       @json.each do |_regex, options|
-        @commands.push options['type'] if options.key? 'type'
+        @commands.push(options['type']) if options.key? 'type'
       end
     end
 
     def command?(command)
-      @commands.include? command
+      @commands.include?(command)
     end
 
     private
@@ -32,14 +32,14 @@ module Projector
         end
       end
       @json_file_existed = true
-      File.open(path, 'r') { |f| JSON.parse f.read }
+      File.open(path, 'r') { |f| JSON.parse(f.read) }
     end
 
     def projections_path
       path = File.expand_path './.projections.json'
       until File.exist? path
-        return nil if [false, '/'].include? File.dirname path
-        path = File.expand_path '../../.projections.json', path
+        return nil if [false, '/'].include?(File.dirname path)
+        path = File.expand_path('../../.projections.json', path)
       end
 
       path
