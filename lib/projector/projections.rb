@@ -2,23 +2,32 @@ require 'json'
 
 module Projector
   class Projections
-    attr_reader :commands
+    attr_reader :types
     attr_reader :json_file_existed
 
     def initialize
-      @commands = []
+      @types = {}
     end
 
     def load_file(path = nil)
       @json = get_json path
 
-      @json.each do |_regex, options|
-        @commands.push(options['type']) if options.key? 'type'
+      @json.each do |glob, options|
+        next unless options.key? 'type'
+        @types[options['type']] = options.merge('glob' => glob)
       end
     end
 
-    def command?(command)
-      @commands.include?(command)
+    def type?(type)
+      @types.key?(type)
+    end
+
+    def file_for(type, file)
+      return nil unless type? type
+      glob = @types[type]['glob']
+      specific_glob = glob.gsub(/(.*)\*(.*)/, "\\1#{file}\\2")
+      file = Dir.glob(specific_glob)[0]
+      File.expand_path(file.nil? ? specific_glob : file)
     end
 
     private
