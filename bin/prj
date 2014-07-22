@@ -3,4 +3,3 @@
 require 'projector/cli'
 
 Projector::CLI.start(ARGV)
-
