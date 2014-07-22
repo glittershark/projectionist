@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/glittershark/projector.svg?branch=master)](https://travis-ci.org/glittershark/projector)
+[![Code Climate](https://codeclimate.com/github/glittershark/projector.png)](https://codeclimate.com/github/glittershark/projector)
 [![Dependency Status](https://gemnasium.com/glittershark/projector.svg)](https://gemnasium.com/glittershark/projector)
 
 # Projector 
