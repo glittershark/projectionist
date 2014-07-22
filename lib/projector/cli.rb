@@ -15,7 +15,7 @@ module Projector
     def edit(type, file)
       editor = ENV['EDITOR'] || `which vim`
       file = @projections.file_for type, file
-      Kernel.exec "#{editor} #{file}"
+      Kernel.exec(editor, file)
     end
   end
 end
