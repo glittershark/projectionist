@@ -12,8 +12,9 @@ module Projector
     end
 
     desc 'edit <type> <file>', 'Edit the file for <type> named <file>'
+    option :editor
     def edit(type, file)
-      editor = ENV['EDITOR'] || `which vim`
+      editor = options[:editor] || ENV['EDITOR'] || `which vim`
       file = @projections.file_for type, file
       Kernel.exec(editor, file)
     end
