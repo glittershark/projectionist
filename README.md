@@ -8,21 +8,26 @@ Command-line interface to the [.projections.json](https://github.com/tpope/vim-p
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'projector'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
     $ gem install projector
 
 ## Usage
 
-TODO: Write usage instructions here
+For ease of typing, the executable file for projector is `prj`.
+
+Given a `.projections.json` file in the root of your project with the following structure:
+
+```
+{
+    "lib/**/*.rb": {
+        "type": "lib"
+    }
+}
+```
+
+The command to edit `lib/whatever/test.rb` would be:
+
+    $ prj edit lib test
+
 
 ## Contributing
 
