@@ -2,4 +2,4 @@
 
 require 'projectionist/cli'
 
-Projector::CLI.start(ARGV)
+Projectionist::CLI.start(ARGV)
