@@ -22,10 +22,10 @@ module Projector
       @types.key?(type)
     end
 
-    def file_for(type, file)
+    def file_for(type, name)
       return nil unless type? type
 
-      glob = build_glob(@types[type]['glob'], file)
+      glob = build_glob(@types[type]['glob'], name)
       file = Dir.glob(glob)[0]
       File.expand_path(file.nil? ? glob : file)
     end
