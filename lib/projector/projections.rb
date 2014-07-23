@@ -7,11 +7,11 @@ module Projector
 
     def initialize
       @types = {}
+      load_file
     end
 
     def load_file(path = nil)
       @json = get_json path
-
       @json.each do |glob, options|
         next unless options.key? 'type'
         @types[options['type']] = options.merge('glob' => glob)

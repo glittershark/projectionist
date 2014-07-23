@@ -7,7 +7,6 @@ module Projector
 
     def initialize(*)
       @projections = Projector::Projections.new
-      @projections.load_file
       super
     end
 
