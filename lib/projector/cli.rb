@@ -16,7 +16,7 @@ module Projector
     def edit(type, file)
       editor = options[:editor] || ENV['EDITOR'] || `which vim`
       file = @projections.file_for type, file
-      Kernel.exec(editor, file)
+      exec editor, file
     end
 
     desc 'list <type>', 'List all files for <type>'
