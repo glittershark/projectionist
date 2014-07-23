@@ -8,6 +8,10 @@ require 'tmpdir'
 RSpec.configure do |config|
   config.before(:suite) { $tmpdir = Dir.mktmpdir }
   config.after(:suite)  { FileUtils.remove_entry_secure $tmpdir }
+
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
 end
 
 def fixture_folder
