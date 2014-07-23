@@ -25,6 +25,7 @@ module Projector
     def file_for(type, name)
       return nil unless type? type
 
+      Dir.chdir @basedir
       glob = build_glob(@types[type]['glob'], name)
       file = Dir.glob(glob)[0]
       File.expand_path(file.nil? ? glob : file)
@@ -55,6 +56,7 @@ module Projector
         return nil if [false, '/'].include?(File.dirname path)
         path = File.expand_path('../../.projections.json', path)
       end
+      @basedir = File.dirname path
       path
     end
 

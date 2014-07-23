@@ -141,6 +141,12 @@ describe Projector::Projections do
           expect(@projections.file_for('test', 'file')).to eq test_file
         end
       end
+
+      context 'in a child directory' do
+        before { Dir.chdir test_dir }
+        subject { @projections.file_for('test', 'file') }
+        it { is_expected.to eq test_file }
+      end
     end
 
     context 'with multi-level globs' do
