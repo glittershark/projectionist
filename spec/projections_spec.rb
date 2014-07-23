@@ -2,11 +2,14 @@ require 'helper'
 
 describe Projector::Projections do
   before do
+    @original_dir = Dir.pwd
     write_fixtures('*/*' => { 'type' => 'test' })
     Dir.mkdir fixture_folder unless Dir.exist? fixture_folder
     Dir.chdir fixture_folder
     @projections = Projector::Projections.new
   end
+
+  after { Dir.chdir @original_dir }
 
   it 'exists' do
     expect(@projections).not_to be nil
@@ -66,19 +69,18 @@ describe Projector::Projections do
   end
 
   describe '#files_for' do
+    let(:test_dir)   { File.join(fixture_folder, 'test') }
+    let(:test_files) { (1..10).map { |n| File.join(test_dir, "test_#{n}.rb") } }
+
     before do
       write_fixtures('test/test_*.rb' => { 'type' => 'test' })
-      @test_dir = File.join(fixture_folder, 'test')
-      Dir.mkdir(@test_dir) unless Dir.exist? @test_dir
-      @test_files = (1..10).map do |n|
-        file = File.join(@test_dir, "test_#{n}.rb")
-        File.open(file, 'w')
-        file
-      end
+      Dir.mkdir(test_dir) unless Dir.exist? test_dir
+
+      test_files.each { |f| File.open(f, 'w') }
 
       # make bad test files as well
       5.times do |n|
-        file = File.join(@test_dir, "bad_#{n}.rb")
+        file = File.join(test_dir, "bad_#{n}.rb")
         File.open(file, 'w')
       end
 
@@ -87,7 +89,7 @@ describe Projector::Projections do
 
     context 'with a valid type' do
       it 'matches the correct files' do
-        expect(@projections.files_for 'test').to match_array(@test_files)
+        expect(@projections.files_for 'test').to match_array(test_files)
       end
     end
 
@@ -99,19 +101,19 @@ describe Projector::Projections do
   end
 
   describe '#file_for' do
+    let(:test_dir)  { File.join(fixture_folder, 'test') }
+    let(:test_file) { File.join(test_dir, 'file.rb') }
     before do
       write_fixtures('test/*.rb' => { 'type' => 'test' })
-      @test_dir = File.join(fixture_folder, 'test')
-      Dir.mkdir(@test_dir) unless Dir.exist? @test_dir
-      @test_file = File.join(@test_dir, 'file.rb')
-      File.open(@test_file, 'w')
+      Dir.mkdir(test_dir) unless Dir.exist? test_dir
+      File.open(test_file, 'w')
       Dir.chdir fixture_folder
       @projections.load_file
     end
 
-    context 'with an valid type' do
+    context 'with a valid type' do
       subject { @projections.file_for('test', 'file') }
-      it { should eq @test_file }
+      it { should eq test_file }
     end
 
     context 'without a valid type' do
@@ -121,21 +123,21 @@ describe Projector::Projections do
 
     context "with a file that doesn't exist" do
       subject { @projections.file_for('test', 'nonexistent') }
-      it { should eq File.join(@test_dir, 'nonexistent.rb') }
+      it { should eq File.join(test_dir, 'nonexistent.rb') }
     end
 
     context 'with other files in the directory' do
+      let(:other_test_file) { File.join(test_dir, 'abc.rb') }
       before do
-        @other_test_file = File.join(@test_dir, 'abc.rb')
-        File.open(@other_test_file, 'w')
+        File.open(other_test_file, 'w')
       end
 
       it 'matches the other file' do
-        expect(@projections.file_for('test', 'abc')).to eq @other_test_file
+        expect(@projections.file_for('test', 'abc')).to eq other_test_file
       end
 
       it 'matches the old file' do
-        expect(@projections.file_for('test', 'file')).to eq @test_file
+        expect(@projections.file_for('test', 'file')).to eq test_file
       end
     end
   end
