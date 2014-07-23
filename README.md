@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/projectionist.svg)](http://badge.fury.io/rb/projectionist)
 [![Build Status](https://travis-ci.org/glittershark/projectionist.svg?branch=master)](https://travis-ci.org/glittershark/projectionist)
 [![Code Climate](https://codeclimate.com/github/glittershark/projectionist.png)](https://codeclimate.com/github/glittershark/projectionist)
 [![Dependency Status](https://gemnasium.com/glittershark/projectionist.svg)](https://gemnasium.com/glittershark/projectionist)
