@@ -24,10 +24,10 @@ module Projector
 
     def file_for(type, file)
       return nil unless type? type
-      glob = @types[type]['glob']
-      specific_glob = glob.gsub(/(.*)\*(.*)/, "\\1#{file}\\2")
-      file = Dir.glob(specific_glob)[0]
-      File.expand_path(file.nil? ? specific_glob : file)
+
+      glob = build_glob(@types[type]['glob'], file)
+      file = Dir.glob(glob)[0]
+      File.expand_path(file.nil? ? glob : file)
     end
 
     def files_for(type)
@@ -55,8 +55,15 @@ module Projector
         return nil if [false, '/'].include?(File.dirname path)
         path = File.expand_path('../../.projections.json', path)
       end
-
       path
+    end
+
+    def build_glob(glob, file)
+      # Split the passed file by `/`, then replace all globs that use `*` or `**` with
+      # components of the passed file, in order
+      file_components = file.split('/')
+      glob_components = glob.split(/\*+/)
+      glob_components.zip(file_components).flatten.compact.join('')
     end
   end
 end

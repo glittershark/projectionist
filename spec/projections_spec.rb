@@ -101,44 +101,61 @@ describe Projector::Projections do
   end
 
   describe '#file_for' do
-    let(:test_dir)  { File.join(fixture_folder, 'test') }
-    let(:test_file) { File.join(test_dir, 'file.rb') }
-    before do
-      write_fixtures('test/*.rb' => { 'type' => 'test' })
-      Dir.mkdir(test_dir) unless Dir.exist? test_dir
-      File.open(test_file, 'w')
-      Dir.chdir fixture_folder
-      @projections.load_file
-    end
-
-    context 'with a valid type' do
-      subject { @projections.file_for('test', 'file') }
-      it { should eq test_file }
-    end
-
-    context 'without a valid type' do
-      subject { @projections.file_for('toast', 'file') }
-      it { should be_nil }
-    end
-
-    context "with a file that doesn't exist" do
-      subject { @projections.file_for('test', 'nonexistent') }
-      it { should eq File.join(test_dir, 'nonexistent.rb') }
-    end
-
-    context 'with other files in the directory' do
-      let(:other_test_file) { File.join(test_dir, 'abc.rb') }
+    context 'with simple globs' do
+      let(:test_dir)  { File.join(fixture_folder, 'test') }
+      let(:test_file) { File.join(test_dir, 'file.rb') }
       before do
-        File.open(other_test_file, 'w')
+        write_fixtures('test/*.rb' => { 'type' => 'test' })
+        Dir.mkdir(test_dir) unless Dir.exist? test_dir
+        File.open(test_file, 'w')
+        Dir.chdir fixture_folder
+        @projections.load_file
       end
 
-      it 'matches the other file' do
-        expect(@projections.file_for('test', 'abc')).to eq other_test_file
+      context 'with a valid type' do
+        subject { @projections.file_for('test', 'file') }
+        it { is_expected.to eq test_file }
       end
 
-      it 'matches the old file' do
-        expect(@projections.file_for('test', 'file')).to eq test_file
+      context 'without a valid type' do
+        subject { @projections.file_for('toast', 'file') }
+        it { is_expected.to be_nil }
       end
+
+      context "with a file that doesn't exist" do
+        subject { @projections.file_for('test', 'nonexistent') }
+        it { is_expected.to eq File.join(test_dir, 'nonexistent.rb') }
+      end
+
+      context 'with other files in the directory' do
+        let(:other_test_file) { File.join(test_dir, 'abc.rb') }
+        before do
+          File.open(other_test_file, 'w')
+        end
+
+        it 'matches the other file' do
+          expect(@projections.file_for('test', 'abc')).to eq other_test_file
+        end
+
+        it 'matches the old file' do
+          expect(@projections.file_for('test', 'file')).to eq test_file
+        end
+      end
+    end
+
+    context 'with multi-level globs' do
+      let(:test_dir)  { File.join(fixture_folder, 'test', 'foobar') }
+      let(:test_file) { File.join(test_dir, 'test_file.rb') }
+      before do
+        write_fixtures('test/**/test_*.rb' => { 'type' => 'test' })
+        FileUtils.mkdir_p test_dir unless Dir.exist? test_dir
+        File.open(test_file, 'w')
+        Dir.chdir fixture_folder
+        @projections.load_file
+      end
+
+      subject { @projections.file_for 'test', 'foobar/file' }
+      it { is_expected.to eq test_file }
     end
   end
 end
