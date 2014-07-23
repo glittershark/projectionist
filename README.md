@@ -27,7 +27,7 @@ Given a `.projections.json` file in the root of your project with the following 
 
 The command to edit `lib/whatever/test.rb` would be:
 
-    $ prj edit lib test
+    $ prj edit lib whatever/test
 
 
 ## Contributing
