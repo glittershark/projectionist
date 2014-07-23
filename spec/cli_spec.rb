@@ -1,8 +1,8 @@
 require 'helper'
 
-describe Projector::CLI do
+describe Projectionist::CLI do
   before do
-    @cli = Projector::CLI.new
+    @cli = Projectionist::CLI.new
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout

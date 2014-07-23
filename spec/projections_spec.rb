@@ -1,12 +1,12 @@
 require 'helper'
 
-describe Projector::Projections do
+describe Projectionist::Projections do
   before do
     @original_dir = Dir.pwd
     write_fixtures('*/*' => { 'type' => 'test' })
     Dir.mkdir fixture_folder unless Dir.exist? fixture_folder
     Dir.chdir fixture_folder
-    @projections = Projector::Projections.new
+    @projections = Projectionist::Projections.new
   end
 
   after { Dir.chdir @original_dir }
@@ -41,7 +41,7 @@ describe Projector::Projections do
         dir = File.join(fixture_folder, 'otherdir')
         Dir.mkdir dir unless Dir.exist? dir
         Dir.chdir dir
-        @projections = Projector::Projections.new
+        @projections = Projectionist::Projections.new
         @projections.load_file
       end
 
@@ -58,7 +58,7 @@ describe Projector::Projections do
       before do
         Dir.chdir fixture_folder
         delete_fixtures
-        @projections = Projector::Projections.new
+        @projections = Projectionist::Projections.new
         @projections.load_file
       end
 

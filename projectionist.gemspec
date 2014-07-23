@@ -1,19 +1,19 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'projector/version'
+require 'projectionist/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'projector'
-  spec.version       = Projector::VERSION
+  spec.name          = 'projectionist'
+  spec.version       = Projectionist::VERSION
   spec.authors       = ['Griffin Smith']
   spec.email         = ['wildgriffin45@gmail.com']
   spec.summary       = 'Command line interface to the .projections.json format'
   spec.description   = <<-EOF
-    Projector allows you to quickly edit files in a project from the command
+    Projectionist allows you to quickly edit files in a project from the command
     line, using the projections.json format
   EOF
-  spec.homepage      = 'http://github.com/glittershark/projector'
+  spec.homepage      = 'http://github.com/glittershark/projectionist'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")

@@ -1,6 +1,6 @@
 require 'json'
 
-module Projector
+module Projectionist
   class Projections
     attr_reader :types
     attr_reader :json_file_existed

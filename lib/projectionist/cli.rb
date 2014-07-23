@@ -1,12 +1,12 @@
-require 'projector'
+require 'projectionist'
 require 'thor'
 
-module Projector
+module Projectionist
   class CLI < Thor
     attr_accessor :projections
 
     def initialize(*)
-      @projections = Projector::Projections.new
+      @projections = Projectionist::Projections.new
       super
     end
 

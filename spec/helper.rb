@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-require 'projector'
+require 'projectionist'
 require 'json'
 require 'fileutils'
 require 'tmpdir'

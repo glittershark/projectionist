@@ -1,18 +1,18 @@
-[![Build Status](https://travis-ci.org/glittershark/projector.svg?branch=master)](https://travis-ci.org/glittershark/projector)
-[![Code Climate](https://codeclimate.com/github/glittershark/projector.png)](https://codeclimate.com/github/glittershark/projector)
-[![Dependency Status](https://gemnasium.com/glittershark/projector.svg)](https://gemnasium.com/glittershark/projector)
+[![Build Status](https://travis-ci.org/glittershark/projectionist.svg?branch=master)](https://travis-ci.org/glittershark/projectionist)
+[![Code Climate](https://codeclimate.com/github/glittershark/projectionist.png)](https://codeclimate.com/github/glittershark/projectionist)
+[![Dependency Status](https://gemnasium.com/glittershark/projectionist.svg)](https://gemnasium.com/glittershark/projectionist)
 
-# Projector 
+# Projectionist 
 
 Command-line interface to the [.projections.json](https://github.com/tpope/vim-projectionist) format - WIP
 
 ## Installation
 
-    $ gem install projector
+    $ gem install projectionist
 
 ## Usage
 
-For ease of typing, the executable file for projector is `prj`.
+For ease of typing, the executable file for projectionist is `prj`.
 
 Given a `.projections.json` file in the root of your project with the following structure:
 
@@ -31,7 +31,7 @@ The command to edit `lib/whatever/test.rb` would be:
 
 ## Contributing
 
-1. [Fork it](https://github.com/glittershark/projector/fork)
+1. [Fork it](https://github.com/glittershark/projectionist/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
