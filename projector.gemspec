@@ -9,7 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Griffin Smith']
   spec.email         = ['wildgriffin45@gmail.com']
   spec.summary       = 'Command line interface to the .projections.json format'
-  # spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.description   = <<-EOF
+    Projector allows you to quickly edit files in a project from the command
+    line, using the projections.json format
+  EOF
   spec.homepage      = 'http://github.com/glittershark/projector'
   spec.license       = 'MIT'
 
@@ -19,9 +22,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 1.6'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'fivemat'
+  spec.add_development_dependency 'rake', '~> 10.3'
+  spec.add_development_dependency 'rspec',  '~> 3.0'
+  spec.add_development_dependency 'fivemat', '~> 1.3'
 
   spec.add_runtime_dependency 'thor', '~> 0.19.1', '>= 0.19'
 end
