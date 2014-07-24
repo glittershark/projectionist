@@ -66,6 +66,13 @@ describe Projectionist::Projections do
         expect(@projections.json_file_existed).to be false
       end
     end
+
+    context 'with `**/*` in projections' do
+      before { write_fixtures('test/**/*.rb' => { 'type' => 'disallowed' }) }
+      it 'raises an error' do
+        expect { @projections.load_file }.to raise_error Projectionist::ProjectionError
+      end
+    end
   end
 
   describe '#files_for' do

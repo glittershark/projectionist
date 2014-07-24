@@ -1,4 +1,5 @@
 require 'json'
+require 'projectionist/errors'
 
 module Projectionist
   class Projections
@@ -14,6 +15,9 @@ module Projectionist
       @json = get_json path
       @json.each do |glob, options|
         next unless options.key? 'type'
+        if glob.include? '**/*'
+          raise Projectionist::ProjectionError, 'Globs may not include `**/*`'
+        end
         @types[options['type']] = options.merge('glob' => glob)
       end
     end

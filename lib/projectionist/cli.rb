@@ -8,6 +8,9 @@ module Projectionist
     def initialize(*)
       @projections = Projectionist::Projections.new
       super
+    rescue Projectionist::ProjectionError => error
+      $stderr.puts "ERROR: #{error.message}"
+      exit 1
     end
 
     desc 'edit <type> <file>', 'Edit the file for <type> named <file>'
