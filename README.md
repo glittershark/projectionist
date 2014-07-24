@@ -5,7 +5,7 @@
 
 # Projectionist 
 
-Command-line interface to the [.projections.json](https://github.com/tpope/vim-projectionist) format - WIP
+Quickly edit project files using the [.projections.json](https://github.com/tpope/vim-projectionist) format
 
 ## Installation
 
@@ -29,12 +29,5 @@ The command to edit `lib/whatever/test.rb` would be:
 
     $ prj edit lib whatever/test
 
-
-## Contributing
-
-1. [Fork it](https://github.com/glittershark/projectionist/fork)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+Note that there are two glob components here - `**` and `*`. When editing files, these components are separated by a `/`
 
