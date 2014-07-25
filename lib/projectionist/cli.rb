@@ -16,7 +16,7 @@ module Projectionist
     desc 'edit <type> <file>', 'Edit the file for <type> named <file>'
     option :editor
     def edit(type, file)
-      editor = options[:editor] || ENV['EDITOR'] || `which vim`
+      editor = options[:editor] || ENV['VISUAL'] || ENV['EDITOR'] || `which vim`
       file = @projections.file_for type, file
       exec editor, file
     end
