@@ -25,6 +25,11 @@ module Projectionist
       puts @projections.files_for(type).join("\n")
     end
 
+    desc 'types', 'List all types'
+    def types
+      puts @projections.types.join("\n")
+    end
+
     no_commands do
       def editor
         editor = options[:editor] || ENV['VISUAL'] || ENV['EDITOR'] || 'vim'

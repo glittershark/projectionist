@@ -21,7 +21,7 @@ describe Projectionist::Projections do
     end
 
     it 'loads the list of types' do
-      expect(@projections.types.keys).to eq ['test']
+      expect(@projections.types).to eq ['test']
     end
 
     it 'has a method to check if a given type exists' do
@@ -46,7 +46,7 @@ describe Projectionist::Projections do
       end
 
       it 'still loads the file' do
-        expect(@projections.types.keys).to eq ['test']
+        expect(@projections.types).to eq ['test']
       end
 
       it 'still sets a flag that the file existed' do
