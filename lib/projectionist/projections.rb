@@ -3,11 +3,10 @@ require 'projectionist/errors'
 
 module Projectionist
   class Projections
-    attr_reader :types
     attr_reader :json_file_existed
 
     def initialize
-      @types = {}
+      @type_hash = {}
       load_file
     end
 
@@ -18,26 +17,30 @@ module Projectionist
         if glob.include? '**/*'
           raise Projectionist::ProjectionError, 'Globs may not include `**/*`'
         end
-        @types[options['type']] = options.merge('glob' => glob)
+        @type_hash[options['type']] = options.merge('glob' => glob)
       end
     end
 
     def type?(type)
-      @types.key?(type)
+      @type_hash.key?(type)
+    end
+
+    def types
+      @type_hash.keys
     end
 
     def file_for(type, name)
       return nil unless type? type
 
       Dir.chdir @basedir
-      glob = build_glob(@types[type]['glob'], name)
+      glob = build_glob(@type_hash[type]['glob'], name)
       file = Dir.glob(glob)[0]
       File.expand_path(file.nil? ? glob : file)
     end
 
     def files_for(type)
       return [] unless type? type
-      glob = @types[type]['glob']
+      glob = @type_hash[type]['glob']
       glob = glob.sub('/*', '/**/*') unless glob.include? '**'
       Dir.glob(glob).map { |p| File.expand_path p }
     end
