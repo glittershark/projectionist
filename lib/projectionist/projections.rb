@@ -1,4 +1,5 @@
 require 'json'
+require 'projectionist/errors'
 
 module Projectionist
   class Projections
@@ -14,6 +15,9 @@ module Projectionist
       @json = get_json path
       @json.each do |glob, options|
         next unless options.key? 'type'
+        if glob.include? '**/*'
+          raise Projectionist::ProjectionError, 'Globs may not include `**/*`'
+        end
         @types[options['type']] = options.merge('glob' => glob)
       end
     end
@@ -63,9 +67,13 @@ module Projectionist
     def build_glob(glob, file)
       # Split the passed file by `/`, then replace all globs that use `*` or
       # `**` with components of the passed file, in order
-      file_components = file.split('/')
-      glob_components = glob.split(/\*+/)
-      glob_components.zip(file_components).flatten.compact.join('')
+      if glob.include? '**'
+        file_components = file.split('/')
+        glob_components = glob.split(/\*+/)
+        glob_components.zip(file_components).flatten.compact.join('')
+      else
+        glob.sub(/\*/, file)
+      end
     end
   end
 end

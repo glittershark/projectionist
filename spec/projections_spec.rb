@@ -66,6 +66,13 @@ describe Projectionist::Projections do
         expect(@projections.json_file_existed).to be false
       end
     end
+
+    context 'with `**/*` in projections' do
+      before { write_fixtures('test/**/*.rb' => { 'type' => 'disallowed' }) }
+      it 'raises an error' do
+        expect { @projections.load_file }.to raise_error Projectionist::ProjectionError
+      end
+    end
   end
 
   describe '#files_for' do
@@ -142,6 +149,18 @@ describe Projectionist::Projections do
         end
       end
 
+      context 'with files in child directories' do
+        let(:test_subdir)      { File.join(test_dir, 'subdir') }
+        let(:test_file_subdir) { File.join(test_subdir, 'file.rb') }
+        before do
+          Dir.mkdir(test_subdir) unless Dir.exist? test_subdir
+          File.open(test_file_subdir, 'w')
+        end
+
+        subject { @projections.file_for('test', 'subdir/file') }
+        it { is_expected.to eq test_file_subdir }
+      end
+
       context 'in a child directory' do
         before { Dir.chdir test_dir }
         subject { @projections.file_for('test', 'file') }
@@ -149,7 +168,7 @@ describe Projectionist::Projections do
       end
     end
 
-    context 'with multi-level globs' do
+    context 'with advanced globs' do
       let(:test_dir)  { File.join(fixture_folder, 'test', 'foobar') }
       let(:test_file) { File.join(test_dir, 'test_file.rb') }
       before do
