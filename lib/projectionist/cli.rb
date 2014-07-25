@@ -1,5 +1,4 @@
 require 'projectionist'
-require 'projectionist/shell_utils'
 require 'thor'
 
 module Projectionist
