@@ -37,7 +37,9 @@ module Projectionist
 
     def files_for(type)
       return [] unless type? type
-      Dir.glob(@types[type]['glob']).map { |p| File.expand_path p }
+      glob = @types[type]['glob']
+      glob = glob.sub('/*', '/**/*') unless glob.include? '**'
+      Dir.glob(glob).map { |p| File.expand_path p }
     end
 
     private

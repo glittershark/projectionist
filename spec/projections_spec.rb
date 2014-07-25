@@ -77,17 +77,17 @@ describe Projectionist::Projections do
 
   describe '#files_for' do
     let(:test_dir)   { File.join(fixture_folder, 'test') }
-    let(:test_files) { (1..10).map { |n| File.join(test_dir, "test_#{n}.rb") } }
+    let(:test_files) { (1..10).map { |n| File.join(test_dir, "#{n}_test.rb") } }
 
     before do
-      write_fixtures('test/test_*.rb' => { 'type' => 'test' })
+      write_fixtures('test/*_test.rb' => { 'type' => 'test' })
       Dir.mkdir(test_dir) unless Dir.exist? test_dir
 
       test_files.each { |f| File.open(f, 'w') }
 
       # make bad test files as well
       5.times do |n|
-        file = File.join(test_dir, "bad_#{n}.rb")
+        file = File.join(test_dir, "#{n}_bad.rb")
         File.open(file, 'w')
       end
 
@@ -104,6 +104,20 @@ describe Projectionist::Projections do
       it 'returns an empty array' do
         expect(@projections.files_for 'toast').to eq []
       end
+    end
+
+    context 'with files in child directories' do
+      let(:test_subdir)      { File.join(test_dir, 'subdir') }
+      let(:test_file_subdir) { File.join(test_subdir, 'subdir_test.rb') }
+      before do
+        Dir.mkdir(test_subdir) unless Dir.exist? test_subdir
+        File.open(test_file_subdir, 'w')
+      end
+
+      after { File.delete test_file_subdir }
+
+      subject { @projections.files_for('test') }
+      it { is_expected.to include test_file_subdir }
     end
   end
 
