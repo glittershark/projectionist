@@ -20,9 +20,11 @@ module Projectionist
       exec "#{editor} #{file}"
     end
 
-    desc 'list <type>', 'List all files for <type>'
+    desc 'list [-v|--verbose] <type>', 'List all files for <type>'
+    option :verbose, type: :boolean, aliases: '-v',
+      desc: "List full file paths instead of file names"
     def list(type)
-      puts @projections.files_for(type).join("\n")
+      puts @projections.files_for(type, verbose: options[:verbose]).join("\n")
     end
 
     desc 'types', 'List all types'
