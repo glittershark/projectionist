@@ -76,8 +76,11 @@ describe Projectionist::Projections do
   end
 
   describe '#files_for' do
-    let(:test_dir)   { File.join(fixture_folder, 'test') }
-    let(:test_files) { (1..10).map { |n| File.join(test_dir, "#{n}_test.rb") } }
+    let(:test_dir)       { File.join(fixture_folder, 'test') }
+    let(:test_files) do
+      (1..10).map { |n| File.join(test_dir, "#{n}_test.rb") }
+    end
+    let(:test_filenames) { (1..10).map(&:to_s) }
 
     before do
       write_fixtures('test/*_test.rb' => { 'type' => 'test' })
@@ -96,7 +99,14 @@ describe Projectionist::Projections do
 
     context 'with a valid type' do
       it 'matches the correct files' do
-        expect(@projections.files_for 'test').to match_array(test_files)
+        expect(@projections.files_for 'test').to match_array(test_filenames)
+      end
+    end
+
+    context 'with verbose: true' do
+      it 'returns the full filepaths' do
+        expect(@projections.files_for 'test', verbose: true)
+          .to match_array(test_files)
       end
     end
 
@@ -107,8 +117,9 @@ describe Projectionist::Projections do
     end
 
     context 'with files in child directories' do
-      let(:test_subdir)      { File.join(test_dir, 'subdir') }
-      let(:test_file_subdir) { File.join(test_subdir, 'subdir_test.rb') }
+      let(:test_subdir)           { File.join(test_dir, 'subdir') }
+      let(:test_file_subdir)      { File.join(test_subdir, 'subdir_test.rb') }
+      let(:test_file_subdir_name) { 'subdir/subdir' }
       before do
         Dir.mkdir(test_subdir) unless Dir.exist? test_subdir
         File.open(test_file_subdir, 'w')
@@ -117,7 +128,7 @@ describe Projectionist::Projections do
       after { File.delete test_file_subdir }
 
       subject { @projections.files_for('test') }
-      it { is_expected.to include test_file_subdir }
+      it { is_expected.to include test_file_subdir_name }
     end
   end
 

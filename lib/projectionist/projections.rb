@@ -38,11 +38,21 @@ module Projectionist
       File.expand_path(file.nil? ? glob : file)
     end
 
-    def files_for(type)
+    def files_for(type, options = {})
       return [] unless type? type
-      glob = @type_hash[type]['glob']
-      glob = glob.sub('/*', '/**/*') unless glob.include? '**'
-      Dir.glob(glob).map { |p| File.expand_path p }
+
+      glob = glob_for type
+      files = Dir.glob(glob)
+      files.map do |p|
+        if options[:verbose]
+          File.expand_path(p)
+        else
+          p.match(glob_to_regex glob) do |m|
+            components = m.captures.reject(&:empty?).map { |s| s.sub('/', '') }
+            components.join('/')
+          end
+        end
+      end
     end
 
     private
@@ -78,6 +88,19 @@ module Projectionist
         glob_components.zip(file_components).flatten.compact.join('')
       else
         glob.sub(/\*/, file)
+      end
+    end
+
+    def glob_for(type)
+      glob = @type_hash[type]['glob']
+      glob = glob.sub('/*', '/**/*') unless glob.include? '**'
+      glob
+    end
+
+
+    def glob_to_regex(glob)
+      glob.match(/(.*)[*]{2}\/(.*)/) do |m|
+        m[1] + '([^\x00]*?)' + m[2].gsub('*', '([^/\x00]*?)')
       end
     end
   end
