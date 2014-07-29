@@ -5,6 +5,9 @@ require 'json'
 require 'fileutils'
 require 'tmpdir'
 
+require 'coveralls'
+Coveralls.wear!
+
 RSpec.configure do |config|
   config.before(:suite) { $tmpdir = Dir.mktmpdir }
   config.after(:suite)  { FileUtils.remove_entry_secure $tmpdir }
