@@ -1,12 +1,12 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
+require 'coveralls'
+Coveralls.wear!
+
 require 'projectionist'
 require 'json'
 require 'fileutils'
 require 'tmpdir'
-
-require 'coveralls'
-Coveralls.wear!
 
 RSpec.configure do |config|
   config.before(:suite) { $tmpdir = Dir.mktmpdir }
