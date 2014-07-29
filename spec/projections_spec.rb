@@ -207,5 +207,18 @@ describe Projectionist::Projections do
       subject { @projections.file_for 'test', 'foobar/file' }
       it { is_expected.to eq test_file }
     end
+
+    context 'with singleton projections' do
+      let(:singleton_file) { File.join(fixture_folder, 'README.md') }
+      before do
+        write_fixtures('README.md' => { 'type' => 'readme' })
+        File.open(singleton_file, 'w')
+        Dir.chdir fixture_folder
+        @projections.load_file
+      end
+
+      subject { @projections.file_for 'readme' }
+      it { is_expected.to eq singleton_file }
+    end
   end
 end

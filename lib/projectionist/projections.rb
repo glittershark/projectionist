@@ -29,7 +29,7 @@ module Projectionist
       @type_hash.keys
     end
 
-    def file_for(type, name)
+    def file_for(type, name='')
       return nil unless type? type
 
       Dir.chdir @basedir

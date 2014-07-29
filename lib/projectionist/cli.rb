@@ -13,9 +13,9 @@ module Projectionist
       exit 1
     end
 
-    desc 'edit <type> <file>', 'Edit the file for <type> named <file>'
+    desc 'edit <type> [<file>]', 'Edit the file for <type> named <file>'
     option :editor
-    def edit(type, file)
+    def edit(type, file='')
       file = @projections.file_for type, file
       exec "#{editor} #{file}"
     end
