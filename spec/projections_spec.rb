@@ -1,36 +1,34 @@
 require 'helper'
 
 describe Projectionist::Projections do
+  let!(:old_cwd) { Dir.pwd }
+
   before do
-    @original_dir = Dir.pwd
-    write_fixtures('*/*' => { 'type' => 'test' })
     Dir.mkdir fixture_folder unless Dir.exist? fixture_folder
+    write_fixtures('*/*' => { 'type' => 'test' })
     Dir.chdir fixture_folder
-    @projections = Projectionist::Projections.new
   end
 
-  after { Dir.chdir @original_dir }
+  after { Dir.chdir old_cwd }
 
-  it 'exists' do
-    expect(@projections).not_to be nil
-  end
+  it('exists') { is_expected.not_to be nil }
 
   describe '.types' do
     before do
-      @projections.load_file fixture_file
+      subject.load_file fixture_file
     end
 
     it 'loads the list of types' do
-      expect(@projections.types).to eq ['test']
+      expect(subject.types).to eq ['test']
     end
 
     it 'has a method to check if a given type exists' do
-      expect(@projections.type? 'test').to be true
-      expect(@projections.type? 'toast').to be false
+      expect(subject.type? 'test').to be true
+      expect(subject.type? 'toast').to be false
     end
 
     it 'sets a flag that the file existed' do
-      expect(@projections.json_file_existed).to be true
+      expect(subject.json_file_existed).to be true
     end
   end
 
@@ -41,16 +39,16 @@ describe Projectionist::Projections do
         dir = File.join(fixture_folder, 'otherdir')
         Dir.mkdir dir unless Dir.exist? dir
         Dir.chdir dir
-        @projections = Projectionist::Projections.new
-        @projections.load_file
+        subject = Projectionist::Projections.new
+        subject.load_file
       end
 
       it 'still loads the file' do
-        expect(@projections.types).to eq ['test']
+        expect(subject.types).to eq ['test']
       end
 
       it 'still sets a flag that the file existed' do
-        expect(@projections.json_file_existed).to be true
+        expect(subject.json_file_existed).to be true
       end
     end
 
@@ -58,19 +56,19 @@ describe Projectionist::Projections do
       before do
         Dir.chdir fixture_folder
         delete_fixtures
-        @projections = Projectionist::Projections.new
-        @projections.load_file
+        subject = Projectionist::Projections.new
+        subject.load_file
       end
 
       it "sets a flag that the file didn't exist" do
-        expect(@projections.json_file_existed).to be false
+        expect(subject.json_file_existed).to be false
       end
     end
 
     context 'with `**/*` in projections' do
       before { write_fixtures('test/**/*.rb' => { 'type' => 'disallowed' }) }
       it 'raises an error' do
-        expect { @projections.load_file }.to raise_error Projectionist::ProjectionError
+        expect { subject.load_file }.to raise_error Projectionist::ProjectionError
       end
     end
   end
@@ -94,25 +92,25 @@ describe Projectionist::Projections do
         File.open(file, 'w')
       end
 
-      @projections.load_file
+      subject.load_file
     end
 
     context 'with a valid type' do
       it 'matches the correct files' do
-        expect(@projections.files_for 'test').to match_array(test_filenames)
+        expect(subject.files_for 'test').to match_array(test_filenames)
       end
     end
 
     context 'with verbose: true' do
       it 'returns the full filepaths' do
-        expect(@projections.files_for 'test', verbose: true)
+        expect(subject.files_for 'test', verbose: true)
           .to match_array(test_files)
       end
     end
 
     context 'without a valid type' do
       it 'returns an empty array' do
-        expect(@projections.files_for 'toast').to eq []
+        expect(subject.files_for 'toast').to eq []
       end
     end
 
@@ -127,8 +125,9 @@ describe Projectionist::Projections do
 
       after { File.delete test_file_subdir }
 
-      subject { @projections.files_for('test') }
-      it { is_expected.to include test_file_subdir_name }
+      it 'includes the correct file' do
+        expect(subject.files_for('test')).to include test_file_subdir_name
+      end
     end
   end
 
@@ -141,22 +140,25 @@ describe Projectionist::Projections do
         Dir.mkdir(test_dir) unless Dir.exist? test_dir
         File.open(test_file, 'w')
         Dir.chdir fixture_folder
-        @projections.load_file
+        subject.load_file
       end
 
       context 'with a valid type' do
-        subject { @projections.file_for('test', 'file') }
-        it { is_expected.to eq test_file }
+        it 'returns the correct file anyway' do
+          expect(subject.file_for('test', 'file')).to eq test_file
+        end
       end
 
       context 'without a valid type' do
-        subject { @projections.file_for('toast', 'file') }
-        it { is_expected.to be_nil }
+        it 'returns nil' do
+          expect(subject.file_for('toast', 'file')).to be_nil
+        end
       end
 
       context "with a file that doesn't exist" do
-        subject { @projections.file_for('test', 'nonexistent') }
-        it { is_expected.to eq File.join(test_dir, 'nonexistent.rb') }
+        it 'returns the correct file' do
+          expect(subject.file_for('test', 'nonexistent')).to eq File.join(test_dir, 'nonexistent.rb')
+        end
       end
 
       context 'with other files in the directory' do
@@ -166,11 +168,11 @@ describe Projectionist::Projections do
         end
 
         it 'matches the other file' do
-          expect(@projections.file_for('test', 'abc')).to eq other_test_file
+          expect(subject.file_for('test', 'abc')).to eq other_test_file
         end
 
         it 'matches the old file' do
-          expect(@projections.file_for('test', 'file')).to eq test_file
+          expect(subject.file_for('test', 'file')).to eq test_file
         end
       end
 
@@ -182,14 +184,16 @@ describe Projectionist::Projections do
           File.open(test_file_subdir, 'w')
         end
 
-        subject { @projections.file_for('test', 'subdir/file') }
-        it { is_expected.to eq test_file_subdir }
+        it 'returns the correct file' do
+          expect(subject.file_for('test', 'subdir/file')).to eq test_file_subdir
+        end
       end
 
       context 'in a child directory' do
         before { Dir.chdir test_dir }
-        subject { @projections.file_for('test', 'file') }
-        it { is_expected.to eq test_file }
+        it 'returns the correct file' do
+          expect(subject.file_for 'test', 'file').to eq test_file
+        end
       end
     end
 
@@ -201,11 +205,12 @@ describe Projectionist::Projections do
         FileUtils.mkdir_p test_dir unless Dir.exist? test_dir
         File.open(test_file, 'w')
         Dir.chdir fixture_folder
-        @projections.load_file
+        subject.load_file
       end
 
-      subject { @projections.file_for 'test', 'foobar/file' }
-      it { is_expected.to eq test_file }
+      it 'returns the correct file path' do
+        expect(subject.file_for 'test', 'foobar/file').to eq test_file
+      end
     end
 
     context 'with singleton projections' do
@@ -214,11 +219,12 @@ describe Projectionist::Projections do
         write_fixtures('README.md' => { 'type' => 'readme' })
         File.open(singleton_file, 'w')
         Dir.chdir fixture_folder
-        @projections.load_file
+        subject.load_file
       end
 
-      subject { @projections.file_for 'readme' }
-      it { is_expected.to eq singleton_file }
+      it 'returns the correct file path' do
+        expect(subject.file_for 'readme').to eq singleton_file
+      end
     end
   end
 end
