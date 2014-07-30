@@ -103,4 +103,10 @@ describe Projectionist::CLI do
       end
     end
   end
+
+  describe '#types' do
+    it 'prints out the list of possible projection types, one per line' do
+      expect { subject.types }.to output("test\n").to_stdout
+    end
+  end
 end
