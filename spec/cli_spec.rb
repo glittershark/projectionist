@@ -7,7 +7,8 @@ describe Projectionist::CLI do
 
   before do
     write_fixtures('test/*.rb' => { 'type' => 'test' })
-    Dir.mkdir(test_dir) unless Dir.exist? test_dir
+    Dir.mkdir fixture_folder unless Dir.exist? fixture_folder
+    Dir.mkdir test_dir unless Dir.exist? test_dir
     File.open(test_file, 'w')
     Dir.chdir fixture_folder
   end
@@ -21,7 +22,7 @@ describe Projectionist::CLI do
         ENV['EDITOR'] = '/this/is/test/two'
       end
 
-      it 'edits the file with $VISUAL' do
+      it 'edits the file with options[:editor]' do
         expect(subject).to receive(:exec).with("/use/this/one #{test_file}")
         subject.edit 'test', 'file'
       end
@@ -72,9 +73,32 @@ describe Projectionist::CLI do
         ENV['VISUAL'] = ''
         ENV['EDITOR'] = ''
       end
+
       it 'edits the file with `vim`' do
         expect(subject).to receive(:exec).with("vim #{test_file}")
         subject.edit 'test', 'file'
+      end
+    end
+  end
+
+  describe '#list' do
+    context 'with options[:verbose]=false' do
+      before do
+        subject.options = { verbose: false }
+      end
+
+      it 'prints out the files for the given type, one per line' do
+        expect { subject.list 'test' }.to output("file\n").to_stdout
+      end
+    end
+
+    context 'with options[:verbose]=true' do
+      before do
+        subject.options = { verbose: true }
+      end
+
+      it 'prints out the full paths for the given type, one per line' do
+        expect { subject.list 'test' }.to output("#{test_file}\n").to_stdout
       end
     end
   end
