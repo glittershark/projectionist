@@ -6,9 +6,10 @@ describe Projectionist::CLI do
   let!(:old_cwd)  { Dir.pwd }
 
   before do
+    FileUtils.rm_rf fixture_folder
+    Dir.mkdir fixture_folder
     write_fixtures('test/*.rb' => { 'type' => 'test' })
-    Dir.mkdir fixture_folder unless Dir.exist? fixture_folder
-    Dir.mkdir test_dir unless Dir.exist? test_dir
+    Dir.mkdir test_dir
     File.open(test_file, 'w')
     Dir.chdir fixture_folder
   end
