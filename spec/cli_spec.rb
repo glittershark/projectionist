@@ -16,6 +16,18 @@ describe Projectionist::CLI do
 
   after { Dir.chdir old_cwd }
 
+  context 'with bad projections' do
+    before do
+      write_fixtures('test/**/*.rb' => { 'type' => 'bad' })
+    end
+
+    it 'prints out an error and exits' do
+      cli = Projectionist::CLI.allocate
+      expect(cli).to receive(:exit).with(1)
+      expect { cli.send(:initialize) }.to output("ERROR: Globs may not include `**/*`\n").to_stderr
+    end
+  end
+
   describe '#edit' do
     context 'with options[:editor] and $EDITOR set' do
       before do
