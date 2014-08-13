@@ -24,7 +24,7 @@ or locally by downloading [this
 file](https://github.com/glittershark/projectionist/raw/master/completion.bash)
 and sourcing it in your `~/.bashrc`
 
-Zsh completion is on the way!
+Zsh completion is [on the way!](https://github.com/glittershark/projectionist/issues/18)
 
 ## Usage
 
