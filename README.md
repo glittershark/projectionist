@@ -6,29 +6,39 @@
 
 # Projectionist 
 
-Quickly edit project files using the [.projections.json](https://github.com/tpope/vim-projectionist) format
+Quickly edit project files using the
+[.projections.json](https://github.com/tpope/vim-projectionist) format
 
 ## Installation
 
     $ gem install projectionist
 
+There's also a bash completion script, that you can install globally by running:
+
+```bash
+$ curl -OL
+https://github.com/glittershark/projectionist/raw/master/completion.bash
+```
+
+or locally by downloading [this
+file](https://github.com/glittershark/projectionist/raw/master/completion.bash)
+and sourcing it in your `~/.bashrc`
+
+Zsh completion is on the way!
+
 ## Usage
 
 For ease of typing, the executable file for projectionist is `prj`.
 
-Given a `.projections.json` file in the root of your project with the following structure:
+Given a `.projections.json` file in the root of your project with the following
+structure:
 
-```
-{
-    "lib/**/*.rb": {
-        "type": "lib"
-    }
-}
-```
+``` { "lib/**/*.rb": { "type": "lib" } } ```
 
 The command to edit `lib/whatever/test.rb` would be:
 
     $ prj edit lib whatever/test
 
-Note that there are two glob components here - `**` and `*`. When editing files, these components are separated by a `/`
+Note that there are two glob components here - `**` and `*`. When editing files,
+these components are separated by a `/`
 
